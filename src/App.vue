@@ -10,18 +10,18 @@
       </div>
 
       <div class="main-content">
-        <button class="arrow" @click="prev">&#8592;</button>
-        <div class="game-box" @click="goTo('gameDesc')">
-          <div class="button-a">A</div>
-          <div class="game-label">Game</div>
-        </div>
-        <button class="arrow" @click="next">&#8594;</button>
-      </div>
+  <button class="arrow" @click="prev">&#8592;</button>
+  <div class="game-box" @click="goTo('gameDesc')">
+    <img :src="'/public/' + currentGame.image" class="game-thumbnail" />
+    <div class="game-label">{{ currentGame.name }}</div>
+  </div>
+  <button class="arrow" @click="next">&#8594;</button>
+</div>
 
-      <div class="genre">
-        <div>Game Genre: Action</div>
-        <div class="genre-name">Developer: Lorem Ipsum</div>
-      </div>
+<div class="genre">
+  <div>Game Genre: {{ currentGame.genre }}</div>
+  <div class="genre-name">Developer: {{ currentGame.developer }}</div>
+</div>
     </div>
 
     <!-- About Page -->
@@ -68,6 +68,7 @@
 
         </div>
         <button class="about-back-button" @click="goTo('home')">Back</button>
+      
 
 
 
@@ -85,18 +86,21 @@
 
       <div class="main-content">
         <div class="game-left">
-          <div class="game-label">Game Image</div>
+          <img :src="'/public/' + currentGame.image" class="game-image" />
         </div>
         <div class="game-center">
-          <div class="game-label">Game Image</div>
+          <img :src="'/public/' + currentGame.image1" class="game-image" />
         </div>
         <div class="game-right">
-          <div class="game-label">Game Image</div>
+          <img :src="'/public/' + currentGame.image2" class="game-image" />
         </div>
       </div>
 
       <div>
-        Lorem ipsum dolor sit amet consectetur adipiscing elit. Sit amet consectetur adipiscing elit quisque faucibus ex. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.
+        Lorem ipsum dolor sit amet consectetur adipiscing elit. Sit amet consectetur adipiscing elit quisque faucibus ex. Adipiscing elit quisque faucibus ex sapien vitae pellentesque. Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. 
+            Lorem ipsum dolor sit amet consectetur adipiscing elit. Sit amet consectetur adipiscing elit quisque faucibus ex. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.
+            Lorem ipsum dolor sit amet consectetur adipiscing elit. Sit amet consectetur adipiscing elit quisque faucibus ex. Adipiscing elit quisque faucibus ex sapien vitae pellentesque.
+            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. 
       </div>
 
       <button class="play">Play</button>
@@ -132,7 +136,39 @@ export default {
   name: 'App',
   data() {
     return {
-      currentPage: 'home'
+      currentPage: 'home',
+      currentGameIndex: 0,
+      games: [
+        {
+          name: 'Action Blaster',
+          genre: 'Action',
+          developer: 'Lorem Ipsum',
+          image: 'Doom.png',
+          image1: 'Doom1.png',
+          image2: 'Doom2.png'
+        },
+        {
+          name: 'Mystery Maze',
+          genre: 'Puzzle',
+          developer: 'Dolor Sit',
+          image: 'Maze.avif',
+          image1: 'Doom1.png',
+          image2: 'Doom2.png'
+        },
+        {
+          name: 'Speed Racer',
+          genre: 'Racing',
+          developer: 'Amet Consectetur',
+          image: 'Race.jpg',
+          image1: 'Doom1.png',
+          image2: 'Doom2.png'
+        }
+      ]
+    };
+  },
+  computed: {
+    currentGame() {
+      return this.games[this.currentGameIndex];
     }
   },
   methods: {
@@ -140,10 +176,18 @@ export default {
       this.currentPage = page;
     },
     prev() {
-      // prev game logic
+      if (this.currentGameIndex > 0) {
+        this.currentGameIndex--;
+      } else {
+        this.currentGameIndex = this.games.length - 1; // wrap around
+      }
     },
     next() {
-      // next game logic
+      if (this.currentGameIndex < this.games.length - 1) {
+        this.currentGameIndex++;
+      } else {
+        this.currentGameIndex = 0; // wrap around
+      }
     }
   }
 }
@@ -213,10 +257,28 @@ body, html, #app {
   width: 300px;
   height: 300px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   cursor: pointer;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+}
+
+.game-box img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.game-label {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .button-a {
@@ -251,7 +313,7 @@ body, html, #app {
   color: #1E1E1E;
 }
 
-/* Game Boxes */
+/* Game Description */
 
 .game-left, .game-center, .game-right {
   background: #dcdcdc;
@@ -265,13 +327,22 @@ body, html, #app {
 }
 
 .game-left, .game-right {
-  width: 75px;
-  height: 25px;
+  width: 200px;
+  height: 200px;
 }
 
 .game-center {
   width: 200px;
-  height: 100px;
+  height: 200px;
+
+}
+.game-box-des img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 
